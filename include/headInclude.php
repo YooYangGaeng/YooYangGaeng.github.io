@@ -1,0 +1,29 @@
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="description" content="페이지설명">
+    <meta name="keywords" content="검색키워드등록">
+    <meta name="classification" content="검색사이트 카테고리 등록">
+
+    <link rel="shortcut icon" type="image/x-icon" href="./assets/image/favicon.ico">
+
+    <!-- jQuery & jQuery UI -->
+    <script src="./assets/script/lib/jquery-1.12.4.min.js"></script>
+    <script src="./assets/script/lib/jquery-ui.js"></script>
+    <link rel="stylesheet" href="./assets/style/jquery-ui.css">
+
+    <!-- Swiper -->
+    <link rel="stylesheet" href="./assets/style/swiper-8.4.7.min.css">
+    <script src="./assets/script/lib/swiper-8.4.7.min.js"></script>
+
+    <!-- Charts -->
+    <script src="./assets/script/lib/echarts.min.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="./assets/style/basic.css">
+    <link rel="stylesheet" href="./assets/style/common.css">
+    <link rel="stylesheet" href="./assets/style/font.css">
+    <link rel="stylesheet" href="./assets/style/gap.css">
+    <link rel="stylesheet" href="./assets/style/layout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/static/pretendard.css">
