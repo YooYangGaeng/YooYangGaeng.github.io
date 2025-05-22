@@ -1,0 +1,103 @@
+:root {
+    font-size: 18px;
+}
+
+@media all and (max-width: 1200px) {
+    :root {
+        font-size: clamp(16px, 1.5vw, 18px);
+    }
+}
+@media all and (max-width: 1024px) {
+    :root {
+        font-size: clamp(14px, 1.56vw, 16px);
+    }
+}
+:root {
+    --fz-14: 0.78rem;
+    --fz-15: 0.83rem;
+    --fz-16: 0.89rem;
+    --fz-17: 0.94rem;
+    --fz-18: 1rem;
+    --fz-19: 1.06rem;
+    --fz-20: 1.11rem;
+    --fz-21: 1.17rem;
+    --fz-22: 1.22rem;
+    --fz-23: 1.28rem;
+    --fz-24: 1.33rem;
+    --fz-25: 1.39rem;
+    --fz-26: 1.44rem;
+    --fz-27: 1.5rem;
+    --fz-28: 1.56rem;
+    --fz-29: 1.61rem;
+    --fz-30: 1.67rem;
+    --fz-31: 1.72rem;
+    --fz-32: 1.78rem;
+    --fz-33: 1.83rem;
+    --fz-34: 1.89rem;
+    --fz-35: 1.94rem;
+    --fz-36: 2rem;
+    --fz-37: 2.06rem;
+    --fz-38: 2.11rem;
+    --fz-39: 2.17rem;
+    --fz-40: 2.22rem;
+    --fz-41: 2.28rem;
+    --fz-42: 2.33rem;
+    --fz-43: 2.39rem;
+    --fz-44: 2.44rem;
+    --fz-45: 2.5rem;
+    --fz-46: 2.56rem;
+    --fz-47: 2.61rem;
+    --fz-48: 2.67rem;
+    --fz-49: 2.72rem;
+    --fz-50: 2.78rem;
+    --fz-51: 2.83rem;
+    --fz-52: 2.89rem;
+    --fz-53: 2.94rem;
+    --fz-54: 3rem;
+    --fz-55: 3.06rem;
+    --fz-56: 3.11rem;
+    --fz-57: 3.17rem;
+    --fz-58: 3.22rem;
+    --fz-59: 3.28rem;
+    --fz-60: 3.33rem;
+    --fz-61: 3.39rem;
+    --fz-62: 3.44rem;
+    --fz-63: 3.5rem;
+    --fz-64: 3.56rem;
+    --fz-65: 3.61rem;
+    --fz-66: 3.67rem;
+    --fz-67: 3.72rem;
+    --fz-68: 3.78rem;
+    --fz-69: 3.83rem;
+    --fz-70: 3.89rem;
+    --fz-71: 3.94rem;
+    --fz-72: 4rem;
+    --fz-73: 4.06rem;
+    --fz-74: 4.11rem;
+    --fz-75: 4.17rem;
+    --fz-76: 4.22rem;
+    --fz-77: 4.28rem;
+    --fz-78: 4.33rem;
+    --fz-79: 4.39rem;
+    --fz-80: 4.44rem;
+    --fz-81: 4.5rem;
+    --fz-82: 4.56rem;
+    --fz-83: 4.61rem;
+    --fz-84: 4.67rem;
+    --fz-85: 4.72rem;
+    --fz-86: 4.78rem;
+    --fz-87: 4.83rem;
+    --fz-88: 4.89rem;
+    --fz-89: 4.94rem;
+    --fz-90: 5rem;
+    --fz-91: 5.06rem;
+    --fz-92: 5.11rem;
+    --fz-93: 5.17rem;
+    --fz-94: 5.22rem;
+    --fz-95: 5.28rem;
+    --fz-96: 5.33rem;
+    --fz-97: 5.39rem;
+    --fz-98: 5.44rem;
+    --fz-99: 5.5rem;
+    --fz-100: 5.56rem;
+}

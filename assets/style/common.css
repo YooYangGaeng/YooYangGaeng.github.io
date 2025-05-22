@@ -1,0 +1,44 @@
+@charset "utf-8";
+/*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+ * Common *
+    
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+/* color */
+:root{
+    --txt-c:#2D2B2A;
+    --border-c:#EBEBEB;
+}
+img {width: 100%; max-width: fit-content;}
+
+/*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+ * Section *
+    
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+section.section {margin-top: 20px; border: 1px solid #ccc; padding: 20px; box-sizing: border-box; background-color: #fff;}
+
+.section [class^=row] + [class^=row] {margin-top: 0; }
+
+/* 반응형에서 조절이 필요한 경우 사용 */
+/*
+@media all and (max-width: 1024px) {
+    .section {padding: 0 0;}
+    .section.last {padding-bottom: 0;}
+    .section [class^=row] + [class^=row] {margin-top: 0;}
+}
+*/
+
+/*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+ * Title *
+    
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+section.main_tit {margin-top: 20px;}
+.main_tit h3 {font-size: 1.8rem; font-weight: 600; letter-spacing: -0.025em;}
+.main_con_tit h5 {}
+
+.sub_main_tit h3 {}
+.sub_con_tit h5 {}
+
+.heading .desc p {}
