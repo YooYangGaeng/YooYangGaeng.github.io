@@ -57,7 +57,7 @@ body{
     border: 1px solid var(--Main);
     background: #fff;
     border-radius: 45px 8px 0 0;
-    position: relative;
+    position: relative; 
     transition: all .3s;
 }
 
