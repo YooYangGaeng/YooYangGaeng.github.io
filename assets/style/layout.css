@@ -59,25 +59,15 @@ body{
     border-radius: 45px 8px 0 0;
     position: relative; 
     transition: all .3s;
+    border-bottom: 0;
+    color: var(--Main);
 }
 
 #header .gnb li a::first-letter{
     text-transform: uppercase;
 }
-#header .gnb li:first-child a{
-    margin-right: -25px;
-}
-#header .gnb li a.active{
-    border-bottom-color: #FFF;
-    color: var(--Main);
-    z-index: 1;
-    font-weight: bold;
-}
-#header .gnb li a:hover{
-    color: #FFF;
-    background: #ffa733;
-    border-bottom-color: #ffa733;
-}
+
+
 
 
 /*------------------------------ .document_content --------------------------------------*/
