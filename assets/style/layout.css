@@ -170,3 +170,30 @@ body{
 
 /* test */
 
+.content{
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #000;
+}
+.content .inner_con{
+    height: 200vh;
+}
+.content.top{
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+.content.bot{
+    height: calc(200px);
+}
+.dialog{
+    height: calc(100vh - 200px);
+    background: #eee;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: none;
+}
+.dialog.on{
+    display: block;
+}
