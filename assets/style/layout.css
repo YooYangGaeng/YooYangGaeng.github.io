@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Moirai+One&display=swap');
 
 /* basic */
-.inner{width: 100%; max-width: 1850px; margin: 0 auto; position: relative;}
+/* .inner{width: 100%; max-width: 1850px; margin: 0 auto; position: relative;}
 
 @media all and (max-width:1850px) {
     .inner{width:93.75%;}
@@ -20,7 +20,6 @@ body{
     max-width: 1450px;
     aspect-ratio: 1/.6;
 }
-/* header */
 #header{
     width: 100%;
     height: 24px;
@@ -66,12 +65,12 @@ body{
 #header .gnb li a::first-letter{
     text-transform: uppercase;
 }
-
+ */
 
 
 
 /*------------------------------ .document_content --------------------------------------*/
-.document_content{
+/* .document_content{
     border: 1px solid var(--Main);
     border-top: 0;
     width: 100%;
@@ -86,9 +85,9 @@ body{
 }
 .document_content .info_list li + li{
     margin-top: 6px;
-}
+} */
 /*------------------------------ swich_btn --------------------------------------*/
-.swich_btn{
+/* .swich_btn{
     display: inline-block;
     width: 42px;
     height: 20px;
@@ -166,8 +165,38 @@ body{
     border-bottom: 12px;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
-} 
+}  */
 
+/* test */
+/* 
+.content{
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #000;
+}
+.content .inner_con{
+    height: 200vh;
+}
+.content.top{
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+.content.bot{
+    height: calc(200px);
+}
+.dialog{
+    height: calc(100vh - 200px);
+    background: #eee;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: none;
+}
+.dialog.on{
+    display: block;
+} */
+/* test */
 /* test */
 
 .content{
@@ -197,3 +226,4 @@ body{
 .dialog.on{
     display: block;
 }
+/* test */
