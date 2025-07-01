@@ -857,7 +857,7 @@
             const vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
         }
-
+        window.addEventListener('resize', setRealVh);
 
         // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', init);
