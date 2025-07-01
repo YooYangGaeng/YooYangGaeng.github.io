@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Shorts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .shorts-wrapper {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .shorts-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .shorts-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-area {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-background {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .video-background.gradient1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .video-background.gradient2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .video-background.gradient3 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .video-background.gradient4 {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .video-background.gradient5 {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .video-content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+        }
+
+        .play-icon-large {
+            width: 128px;
+            height: 128px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .play-icon-large::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 24px solid white;
+            border-top: 16px solid transparent;
+            border-bottom: 16px solid transparent;
+            margin-left: 8px;
+        }
+
+        .video-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .video-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .play-button.show {
+            display: flex;
+        }
+
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 20px solid white;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 4px;
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #ff0000;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .top-ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+            z-index: 10;
+        }
+
+        .top-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+        }
+
+        .shorts-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .icon-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .side-actions {
+            position: absolute;
+            right: 16px;
+            bottom: 96px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            z-index: 10;
+        }
+
+        .action-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            color: white;
+        }
+
+        .action-icon.liked {
+            background: #ff0000;
+        }
+
+        .action-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .action-count {
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .bottom-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: white;
+            z-index: 10;
+        }
+
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .channel-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .subscribe-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .video-description {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .video-stats {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* 스크롤 인디케이터 */
+        .scroll-indicator {
+            position: fixed;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .scroll-dot {
+            width: 4px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+
+        .scroll-dot.active {
+            background: white;
+        }
+
+        /* 아이콘 스타일 */
+        .heart-icon::after {
+            content: '♥';
+            font-size: 20px;
+        }
+
+        .comment-icon::after {
+            content: '💬';
+            font-size: 18px;
+        }
+
+        .share-icon::after {
+            content: '📤';
+            font-size: 18px;
+        }
+
+        .volume-icon::after {
+            content: '🔊';
+            font-size: 18px;
+        }
+
+        .volume-icon.muted::after {
+            content: '🔇';
+        }
+
+        .more-icon::after {
+            content: '⋮';
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <div class="shorts-wrapper" id="shortsWrapper">
+        <!-- 첫 번째 쇼츠 -->
+        <div class="shorts-container" data-index="0">
+            <div class="video-area">
+                <div class="video-background gradient1">
+                    <div class="video-content">
+                        <div class="play-icon-large"></div>
+                        <div class="video-title">리액트 Hooks 완전정복</div>
+                        <div class="video-subtitle">3분만에 useState, useEffect 마스터하기!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="play-overlay" onclick="togglePlay(0)">
+                <div class="play-button" id="playButton0"></div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill0"></div>
+            </div>
+
+            <div class="top-ui">
+                <div class="top-controls">
+                    <div class="shorts-title">Shorts</div>
+                    <div class="top-actions">
+                        <button class="icon-button volume-icon" id="volumeBtn0" onclick="toggleMute(0)"></button>
+                        <button class="icon-button more-icon"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-actions">
+                <div class="action-button">
+                    <button class="action-icon heart-icon" id="likeBtn0" onclick="toggleLike(0)"></button>
+                    <span class="action-count" id="likeCount0">12.8K</span>
+                </div>
+                <div class="action-button">
+                    <button class="action-icon comment-icon"></button>
+                    <span class="action-count">342</span>
+                </div>
+                <div class="action-button">
+                    <button class="action-icon share-icon"></button>
+                    <span class="action-count">공유</span>
+                </div>
+            </div>
+
+            <div class="bottom-info">
+                <div class="channel-info">
+                    <div class="avatar"></div>
+                    <span class="channel-name">코딩마스터김</span>
+                    <button class="subscribe-btn">구독</button>
+                </div>
+                <div class="video-description">
+                    리액트 Hooks를 3분만에 완전 정복해보세요! useState와 useEffect의 핵심 개념부터 실전 활용법까지 🔥 #React #Hooks
+                </div>
+                <div class="video-stats">조회수 1.2M회 • 2일 전</div>
+            </div>
+        </div>
+
+        <!-- 두 번째 쇼츠 -->
+        <div class="shorts-container" data-index="1">
+            <div class="video-area">
+                <div class="video-background gradient2">
+                    <div class="video-content">
+                        <div class="play-icon-large"></div>
+                        <div class="video-title">자바스크립트 ES6 꿀팁</div>
+                        <div class="video-subtitle">화살표 함수부터 구조분해할당까지!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="play-overlay" onclick="togglePlay(1)">
+                <div class="play-button" id="playButton1"></div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill1"></div>
+            </div>
+
+            <div class="top-ui">
+                <div class="top-controls">
+                    <div class="shorts-title">Shorts</div>
+                    <div class="top-actions">
+                        <button class="icon-button volume-icon" id="volumeBtn1" onclick="toggleMute(1)"></button>
+                        <button class="icon-button more-icon"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-actions">
+                <div class="action-button">
+                    <button class="action-icon heart-icon" id="likeBtn1" onclick="toggleLike(1)"></button>
+                    <span class="action-count" id="likeCount1">8.3K</span>
+                </div>
+                <div class="action-button">
+                    <button class="action-icon comment-icon"></button>
+                    <span class="action-count">156</span>
+                </div>
+                <div class="action-button">
+                    <button class="action-icon share-icon"></button>
+                    <span class="action-count">공유</span>
+                </div>
+            </div>
+
+            <div class="bottom-info">
+                <div class="channel-info">
+                    <div class="avatar"></div>
+                    <span class="channel-name">JS마법사</span>
+                    <button class="subscribe-btn">구독</button>
+                </div>
+                <div class="video-description">
+                    ES6의 신기능들을 실무에서 바로 활용할 수 있는 방법들을 소개합니다! 💡 #JavaScript #ES6 #코딩팁
+                </div>
+                <div class="video-stats">조회수 850K회 • 1일 전</div>
+            </div>
+        </div>
+
+        <!-- 세 번째 쇼츠 -->
+        <div class="shorts-container" data-index="2">
+            <div class="video-area">
+                <div class="video-background gradient3">
+                    <div class="video-content">
+                        <div class="play-icon-large"></div>
+                        <div class="video-title">CSS 애니메이션 마법</div>
+                        <div class="video-subtitle">transform과 transition으로 만드는 놀라운 효과!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="play-overlay" onclick="togglePlay(2)">
+                <div class="play-button" id="playButton2"></div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill2"></div>
+            </div>
+
+            <div class="top-ui">
+                <div class="top-controls">
+                    <div class="shorts-title">Shorts</div>
+                    <div class="top-actions">
+                        <button class="icon-button volume-icon" id="volumeBtn2" onclick="toggleMute(2)"></button>
+                        <button class="icon-button more-icon"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-actions">
+                <div class="action-button">
+                    <button class="action-icon heart-icon" id="likeBtn2" onclick="toggleLike(2)"></button>
+                    <span class="action-count" id="likeCount2">15.2K</span>
+                </div>
+                <div class="action-button">
+                    <button class="action-icon comment-icon"></button>
+                    <span class="action-count">428</span>
+                </div>
+                <div class="action-button">
+                    <button class="action-icon share-icon"></button>
+                    <span class="action-count">공유</span>
+                </div>
+            </div>
+
+            <div class="bottom-info">
+                <div class="channel-info">
+                    <div class="avatar"></div>
+                    <span class="channel-name">CSS아티스트</span>
+                    <button class="subscribe-btn">구독</button>
+                </div>
+                <div class="video-description">
+                    CSS만으로도 이런 멋진 애니메이션을 만들 수 있어요! 🎨 #CSS #Animation #웹디자인
+                </div>
+                <div class="video-stats">조회수 2.1M회 • 3일 전</div>
+            </div>
+        </div>
+
+        <!-- 네 번째 쇼츠 -->
+        <div class="shorts-container" data-index="3">
+            <div class="video-area">
+                <div class="video-background gradient4">
+                    <div class="video-content">
+                        <div class="play-icon-large"></div>
+                        <div class="video-title">Git 명령어 한방에</div>
+                        <div class="video-subtitle">개발자라면 반드시 알아야 할 Git 핵심 명령어!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="play-overlay" onclick="togglePlay(3)">
+                <div class="play-button" id="playButton3"></div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill3"></div>
+            </div>
+
+            <div class="top-ui">
+                <div class="top-controls">
+                    <div class="shorts-title">Shorts</div>
+                    <div class="top-actions">
+                        <button class="icon-button volume-icon" id="volumeBtn3" onclick="toggleMute(3)"></button>
+                        <button class="icon-button more-icon"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-actions">
+                <div class="action-button">
+                    <button class="action-icon heart-icon" id="likeBtn3" onclick="toggleLike(3)"></button>
+                    <span class="action-count" id="likeCount3">9.7K</span>
+                </div>
+                <div class="action-button">
+                    <button class="action-icon comment-icon"></button>
+                    <span class="action-count">234</span>
+                </div>
+                <div class="action-button">
+                    <button class="action-icon share-icon"></button>
+                    <span class="action-count">공유</span>
+                </div>
+            </div>
+
+            <div class="bottom-info">
+                <div class="channel-info">
+                    <div class="avatar"></div>
+                    <span class="channel-name">Git마스터</span>
+                    <button class="subscribe-btn">구독</button>
+                </div>
+                <div class="video-description">
+                    Git을 처음 배우는 분들을 위한 필수 명령어 모음집! 🚀 #Git #개발 #버전관리
+                </div>
+                <div class="video-stats">조회수 645K회 • 5일 전</div>
+            </div>
+        </div>
+
+        <!-- 다섯 번째 쇼츠 -->
+        <div class="shorts-container" data-index="4">
+            <div class="video-area">
+                <div class="video-background gradient5">
+                    <div class="video-content">
+                        <div class="play-icon-large"></div>
+                        <div class="video-title">파이썬 한 줄 코딩</div>
+                        <div class="video-subtitle">놀라운 파이썬 원라이너 코드 모음!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="play-overlay" onclick="togglePlay(4)">
+                <div class="play-button" id="playButton4"></div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill4"></div>
+            </div>
+
+            <div class="top-ui">
+                <div class="top-controls">
+                    <div class="shorts-title">Shorts</div>
+                    <div class="top-actions">
+                        <button class="icon-button volume-icon" id="volumeBtn4" onclick="toggleMute(4)"></button>
+                        <button class="icon-button more-icon"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-actions">
+                <div class="action-button">
+                    <button class="action-icon heart-icon" id="likeBtn4" onclick="toggleLike(4)"></button>
+                    <span class="action-count" id="likeCount4">22.1K</span>
+                </div>
+                <div class="action-button">
+                    <button class="action-icon comment-icon"></button>
+                    <span class="action-count">567</span>
+                </div>
+                <div class="action-button">
+                    <button class="action-icon share-icon"></button>
+                    <span class="action-count">공유</span>
+                </div>
+            </div>
+
+            <div class="bottom-info">
+                <div class="channel-info">
+                    <div class="avatar"></div>
+                    <span class="channel-name">파이썬킹</span>
+                    <button class="subscribe-btn">구독</button>
+                </div>
+                <div class="video-description">
+                    한 줄로 이런 것까지 가능하다고?! 파이썬의 놀라운 원라이너 모음 🐍 #Python #코딩 #원라이너
+                </div>
+                <div class="video-stats">조회수 3.2M회 • 1주일 전</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentVideoIndex = 0;
+        let videos = [];
+        let progressIntervals = [];
+
+        // 비디오 데이터 초기화
+        function initVideos() {
+            const videoCount = 5;
+            for (let i = 0; i < videoCount; i++) {
+                videos.push({
+                    isPlaying: true,
+                    isMuted: false,
+                    isLiked: false,
+                    likes: [12847, 8342, 15267, 9734, 22187][i],
+                    currentTime: 0,
+                    duration: 30
+                });
+            }
+        }
+
+        // 스크롤 인디케이터 생성
+        function createScrollIndicator() {
+            const indicator = document.getElementById('scrollIndicator');
+            for (let i = 0; i < 5; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'scroll-dot';
+                if (i === 0) dot.classList.add('active');
+                indicator.appendChild(dot);
+            }
+        }
+
+        // 스크롤 인디케이터 업데이트
+        function updateScrollIndicator(index) {
+            const dots = document.querySelectorAll('.scroll-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        // 진행바 시작
+        function startProgress(index) {
+            if (progressIntervals[index]) {
+                clearInterval(progressIntervals[index]);
+            }
+            
+            progressIntervals[index] = setInterval(() => {
+                if (videos[index].isPlaying) {
+                    videos[index].currentTime += 0.1;
+                    if (videos[index].currentTime >= videos[index].duration) {
+                        videos[index].currentTime = 0;
+                    }
+                    updateProgress(index);
+                }
+            }, 100);
+        }
+
+        // 진행바 업데이트
+        function updateProgress(index) {
+            const progressFill = document.getElementById(`progressFill${index}`);
+            if (progressFill) {
+                const percentage = (videos[index].currentTime / videos[index].duration) * 100;
+                progressFill.style.width = percentage + '%';
+            }
+        }
+
+        // 재생/일시정지 토글
+        function togglePlay(index) {
+            videos[index].isPlaying = !videos[index].isPlaying;
+            const playButton = document.getElementById(`playButton${index}`);
+            
+            if (videos[index].isPlaying) {
+                playButton.classList.remove('show');
+            } else {
+                playButton.classList.add('show');
+            }
+        }
+
+        // 음소거 토글
+        function toggleMute(index) {
+            videos[index].isMuted = !videos[index].isMuted;
+            const volumeBtn = document.getElementById(`volumeBtn${index}`);
+            
+            if (videos[index].isMuted) {
+                volumeBtn.classList.add('muted');
+            } else {
+                volumeBtn.classList.remove('muted');
+            }
+        }
+
+        // 좋아요 토글
+        function toggleLike(index) {
+            videos[index].isLiked = !videos[index].isLiked;
+            const likeBtn = document.getElementById(`likeBtn${index}`);
+            const likeCount = document.getElementById(`likeCount${index}`);
+            
+            if (videos[index].isLiked) {
+                likeBtn.classList.add('liked');
+                videos[index].likes += 1;
+            } else {
+                likeBtn.classList.remove('liked');
+                videos[index].likes -= 1;
+            }
+            
+            likeCount.textContent = formatNumber(videos[index].likes);
+        }
+
+        // 숫자 포맷팅
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+
+        // 스크롤 이벤트 처리
+        function handleScroll() {
+            const wrapper = document.getElementById('shortsWrapper');
+            const scrollTop = wrapper.scrollTop;
+            const windowHeight = window.innerHeight;
+            const newIndex = Math.round(scrollTop / windowHeight);
+            
+            if (newIndex !== currentVideoIndex && newIndex >= 0 && newIndex < videos.length) {
+                // 이전 비디오 일시정지
+                videos[currentVideoIndex].isPlaying = false;
+                const prevPlayButton = document.getElementById(`playButton${currentVideoIndex}`);
+                if (prevPlayButton) {
+                    prevPlayButton.classList.add('show');
+                }
+                
+                // 새 비디오 재생
+                currentVideoIndex = newIndex;
+                videos[currentVideoIndex].isPlaying = true;
+                const currentPlayButton = document.getElementById(`playButton${currentVideoIndex}`);
+                if (currentPlayButton) {
+                    currentPlayButton.classList.remove('show');
+                }
+                
+                updateScrollIndicator(currentVideoIndex);
+            }
+        }
+
+        // 초기화
+        function init() {
+            initVideos();
+            createScrollIndicator();
+            
+            // 모든 비디오의 진행바 시작
+            for (let i = 0; i < videos.length; i++) {
+                startProgress(i);
+            }
+            
+            // 첫 번째 비디오만 재생
+            for (let i = 1; i < videos.length; i++) {
+                videos[i].isPlaying = false;
+                const playButton = document.getElementById(`playButton${i}`);
+                if (playButton) {
+                    playButton.classList.add('show');
+                }
+            }
+            
+            // 스크롤 이벤트 리스너
+            const wrapper = document.getElementById('shortsWrapper');
+            wrapper.addEventListener('scroll', handleScroll);
+            
+            // 터치 및 휠 이벤트로 스크롤 개선
+            let isScrolling = false;
+            wrapper.addEventListener('wheel', (e) => {
+                if (isScrolling) return;
+                isScrolling = true;
+                
+                if (e.deltaY > 0 && currentVideoIndex < videos.length - 1) {
+                    wrapper.scrollTo({
+                        top: (currentVideoIndex + 1) * window.innerHeight,
+                        behavior: 'smooth'
+                    });
+                } else if (e.deltaY < 0 && currentVideoIndex > 0) {
+                    wrapper.scrollTo({
+                        top: (currentVideoIndex - 1) * window.innerHeight,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 1000);
+            });
+        }
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
