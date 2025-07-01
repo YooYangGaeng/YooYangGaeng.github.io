@@ -33,7 +33,7 @@
         .shorts-container {
             position: relative;
             width: 100%;
-            height: 100vh;
+            height: var(--vh);
             background: #000;
             scroll-snap-align: start;
             display: flex;
@@ -849,6 +849,13 @@
                 }, 1000);
             });
         }
+
+        function setRealVh() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        setRealVh()
+
 
         // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', init);
