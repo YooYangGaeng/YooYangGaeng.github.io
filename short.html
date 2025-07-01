@@ -13,7 +13,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #000;
@@ -21,10 +21,13 @@
             height: var(--vh);               /* 사용자 정의된 높이 */
             min-height: 100vh;              /* 브라우저 뷰포트 기준 기본 높이 */
         
-            @supports (-webkit-appearance:none) and (stroke-color: transparent) {
-                min-height: -webkit-fill-available;  /* iOS 대응용 */
-            }
+         
         }
+@supports (-webkit-touch-callout: none) { 
+ body {
+        height: -webkit-fill-available;   /* Safari에서 주소창 영역까지 채움 */
+    }
+}
 
 
 
